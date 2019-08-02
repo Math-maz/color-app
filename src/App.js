@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import Palette from './Palette';
-import './App.css';
-import seedColors from './seedColors';
-import { Route, Switch } from 'react-router-dom';
-import { generatePalette } from './colorHelpers';
-import Palettelist from './Palettelist';
+import React, { Component } from "react";
+import Palette from "./Palette";
+import "./App.css";
+import seedColors from "./seedColors";
+import { Route, Switch } from "react-router-dom";
+import { generatePalette } from "./colorHelpers";
+import SingleColorPalette from "./SingleColorPalette";
+import Palettelist from "./Palettelist";
 class App extends Component {
   findPalette(paletteId) {
     // let foundPalette = seedColors.filter(
@@ -23,7 +24,9 @@ class App extends Component {
           <Route
             exact
             path="/"
-            render={routeProps => <Palettelist palettes={seedColors} />}
+            render={routeProps => (
+              <Palettelist {...routeProps} palettes={seedColors} />
+            )}
           />
           <Route
             exact
@@ -32,6 +35,18 @@ class App extends Component {
               <Palette
                 palette={generatePalette(
                   this.findPalette(routeProps.match.params.id)
+                )}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/palette/:paletteId/:colorId"
+            render={routeProps => (
+              <SingleColorPalette
+                colorId={routeProps.match.params.colorId}
+                palette={generatePalette(
+                  this.findPalette(routeProps.match.params.paletteId)
                 )}
               />
             )}
